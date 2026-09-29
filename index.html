@@ -143,6 +143,30 @@ button:focus-visible{outline:3px solid #7cc4ff;outline-offset:4px;border-radius:
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.2s!important}
   .racer{display:none}
 }
+
+/* ---------- MÚSICA Y LETRA ---------- */
+.enter{margin-top:16px;padding:14px 28px;border-radius:99px;font-weight:800;font-size:18px;color:#fff;
+  background:linear-gradient(90deg,#0b4fc4,#1e90ff);box-shadow:0 0 24px rgba(30,144,255,.7);animation:pulse 1.6s ease-in-out infinite}
+.enter[hidden]{display:none}
+.music-btn{position:fixed;z-index:21;top:calc(env(safe-area-inset-top,0px) + 14px);right:16px;width:44px;height:44px;border-radius:50%;
+  background:rgba(20,40,90,.65);backdrop-filter:blur(6px);font-size:20px;display:none}
+body.playing .music-btn{display:block}
+.close{right:auto;left:16px}
+.lyrics{position:fixed;z-index:20;left:0;top:0;bottom:0;width:min(30vw,340px);pointer-events:none;opacity:0;transition:opacity 1.2s;
+  padding:calc(env(safe-area-inset-top,0px) + 70px) 14px calc(env(safe-area-inset-bottom,0px) + 70px) 26px;
+  -webkit-mask:linear-gradient(180deg,transparent 0%,#000 32%,#000 68%,transparent 100%);mask:linear-gradient(180deg,transparent 0%,#000 32%,#000 68%,transparent 100%)}
+.lyrics.on{opacity:1}
+.lyrics .vp{position:relative;height:100%;overflow:hidden}
+.lyrics .list{position:absolute;left:0;right:0;top:50%;transition:transform .7s cubic-bezier(.3,.8,.3,1)}
+.lyrics p{font-weight:800;font-size:clamp(15px,1.6vw,20px);line-height:1.35;margin:12px 0;color:rgba(190,220,255,.32);
+  transform-origin:left center;transition:color .4s,transform .4s,text-shadow .4s}
+.lyrics p.now{color:#fff;transform:scale(1.12);text-shadow:0 0 12px #1e90ff,0 0 26px rgba(30,144,255,.6)}
+body.withlyrics .screen{padding-left:calc(min(30vw,340px) + 16px)}
+@media (max-width:760px){
+  .lyrics{top:auto;height:120px;width:100%;padding:0 20px calc(env(safe-area-inset-bottom,0px) + 8px);text-align:center}
+  .lyrics p{transform-origin:center;font-size:16px;margin:8px 0}
+  body.withlyrics .screen{padding-left:16px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 124px)}
+}
 </style>
 </head>
 <body>
@@ -155,7 +179,8 @@ button:focus-visible{outline:3px solid #7cc4ff;outline-offset:4px;border-radius:
   </div>
   <div class="bar"><div class="fill" id="fill"></div></div>
   <div class="pct" id="pct">0%</div>
-  <div class="loadtext">Calentando motores para ti…</div>
+  <div class="loadtext" id="loadtext">Calentando motores para ti…</div>
+  <button class="enter" id="enterBtn" hidden>Toca para entrar 💙</button>
 </section>
 
 <!-- 2. Pantalla de flores -->
@@ -224,6 +249,11 @@ button:focus-visible{outline:3px solid #7cc4ff;outline-offset:4px;border-radius:
     <div class="gifts" id="giftGrid"></div>
   </div>
 </section>
+
+<!-- Música y letra -->
+<audio id="song" src="cancion.mp3" preload="auto" loop></audio>
+<button class="music-btn" id="musicBtn" aria-label="Pausar música">🔊</button>
+<div class="lyrics" id="lyrics" aria-live="off"><div class="vp"><div class="list" id="lyricList"></div></div></div>
 
 <!-- Tarjeta -->
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Tarjeta de regalo">
@@ -409,7 +439,7 @@ function tick(t){
   const w=runner.offsetWidth;
   runner.style.left=`calc(${p}% - ${p/100*w}px)`;
   if(k<1) requestAnimationFrame(tick);
-  else { pct.textContent='100%'; setTimeout(()=>show('flowers'),700); }
+  else { pct.textContent='100%'; document.getElementById('loadtext').hidden=true; document.getElementById('enterBtn').hidden=false; }
 }
 requestAnimationFrame(tick);
 
@@ -478,6 +508,50 @@ function closeCard(){modal.classList.remove('show');}
 document.getElementById('closeBtn').addEventListener('click',closeCard);
 modal.addEventListener('click',e=>{if(e.target===modal)closeCard();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCard();});
+/* ---------- música y letra sincronizada ---------- */
+/* Ajusta este número si la letra va adelantada (+) o atrasada (-), en segundos */
+const LYRIC_OFFSET = 0;
+const song=document.getElementById('song'), lyricsBox=document.getElementById('lyrics'), list=document.getElementById('lyricList'), musicBtn=document.getElementById('musicBtn');
+let lines=[], cur=-1;
+function parseLRC(txt){
+  const out=[];
+  txt.split(/\r?\n/).forEach(row=>{
+    const tags=[...row.matchAll(/\[(\d+):(\d+(?:[.:]\d+)?)\]/g)];
+    if(!tags.length) return;
+    const text=row.replace(/\[[^\]]*\]/g,'').trim() || '♪';
+    tags.forEach(m=>out.push({t:parseInt(m[1])*60+parseFloat(m[2].replace(':','.')),text}));
+  });
+  return out.sort((a,b)=>a.t-b.t);
+}
+fetch('letra.lrc').then(r=>r.ok?r.text():'').then(txt=>{
+  lines=parseLRC(txt||'');
+  list.innerHTML=lines.map(l=>`<p>${l.text.replace(/</g,'&lt;')}</p>`).join('');
+}).catch(()=>{});
+function syncLyrics(){
+  if(lines.length){
+    const t=song.currentTime+LYRIC_OFFSET;
+    let i=-1; for(let k=0;k<lines.length;k++){ if(lines[k].t<=t) i=k; else break; }
+    if(i!==cur){
+      const ps=list.children;
+      if(ps[cur]) ps[cur].classList.remove('now');
+      cur=i;
+      const el=ps[Math.max(i,0)];
+      if(i>=0) el.classList.add('now');
+      if(el) list.style.transform=`translateY(${-(el.offsetTop+el.offsetHeight/2)}px)`;
+    }
+  }
+  requestAnimationFrame(syncLyrics);
+}
+document.getElementById('enterBtn').addEventListener('click',()=>{
+  song.play().then(()=>document.body.classList.add('playing')).catch(()=>{});
+  if(lines.length){ document.body.classList.add('withlyrics'); lyricsBox.classList.add('on'); }
+  show('flowers');
+  requestAnimationFrame(syncLyrics);
+});
+musicBtn.addEventListener('click',()=>{
+  if(song.paused){ song.play(); musicBtn.textContent='🔊'; musicBtn.setAttribute('aria-label','Pausar música'); }
+  else { song.pause(); musicBtn.textContent='🔇'; musicBtn.setAttribute('aria-label','Reanudar música'); }
+});
 </script>
 </body>
 </html>
