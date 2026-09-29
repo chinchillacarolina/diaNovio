@@ -322,11 +322,45 @@ const penguinHead = `
   <circle cx="89" cy="74" r="3.5" fill="#ff8fab" opacity=".6"/><circle cx="121" cy="74" r="3.5" fill="#ff8fab" opacity=".6"/>`;
 
 /* ---------- imágenes propias (mismo folder que index.html) ---------- */
+/* Quita automáticamente el fondo blanco que toca los bordes de cada imagen */
+const cleaned={};
+function removeWhiteBg(src){
+  return new Promise(res=>{
+    const im=new Image();
+    im.onload=()=>{
+      try{
+        const w=im.naturalWidth,h=im.naturalHeight;
+        const c=document.createElement('canvas');c.width=w;c.height=h;
+        const ctx=c.getContext('2d');ctx.drawImage(im,0,0);
+        const d=ctx.getImageData(0,0,w,h),p=d.data;
+        const isBg=i=>p[i+3]>0&&p[i]>212&&p[i+1]>212&&p[i+2]>212&&Math.max(p[i],p[i+1],p[i+2])-Math.min(p[i],p[i+1],p[i+2])<28;
+        const seen=new Uint8Array(w*h),stack=[];
+        for(let x=0;x<w;x++)stack.push(x,(h-1)*w+x);
+        for(let y=0;y<h;y++)stack.push(y*w,y*w+w-1);
+        while(stack.length){
+          const k=stack.pop(); if(seen[k])continue; seen[k]=1;
+          const i=k*4; if(!isBg(i))continue;
+          p[i+3]=0;
+          const x=k%w,y=(k-x)/w;
+          if(x>0)stack.push(k-1); if(x<w-1)stack.push(k+1);
+          if(y>0)stack.push(k-w); if(y<h-1)stack.push(k+w);
+        }
+        ctx.putImageData(d,0,0);
+        cleaned[src]=c.toDataURL('image/png');
+      }catch(e){}
+      res();
+    };
+    im.onerror=()=>res();
+    im.src=src;
+  });
+}
+['1.png','2.png','3.png','4.png'].forEach(removeWhiteBg);
+
 function imgHead(src){
-  return `<image href="${src}" x="63" y="16" width="84" height="84" preserveAspectRatio="xMidYMid meet"/>`;
+  return `<image href="${cleaned[src]||src}" x="63" y="16" width="84" height="84" preserveAspectRatio="xMidYMid meet"/>`;
 }
 function imgCard(src){
-  return `<img src="${src}" alt="" style="width:88%;max-height:92%;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))">`;
+  return `<img src="${cleaned[src]||src}" alt="" style="width:88%;max-height:92%;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))">`;
 }
 
 /* ---------- contenido de las 4 tarjetas ---------- */
