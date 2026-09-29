@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feliz Día del Novio, mi amorcito lindo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Russo+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#040a1c; --deep:#0a1a44; --blue:#1e90ff; --ice:#cfe9ff; --pink:#ff4d8d;
+  --script:'Great Vibes','Brush Script MT','Segoe Script',cursive;
+  --race:'Russo One','Arial Black',Impact,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+:root:not([data-theme="light"]){color-scheme:dark}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--night:#040a1c}}
+:root[data-theme="dark"]{--night:#040a1c}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;overflow:hidden;background:#02050f;color:#eaf4ff;font-family:var(--body)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:focus-visible{outline:3px solid #7cc4ff;outline-offset:4px;border-radius:12px}
+
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) 16px calc(env(safe-area-inset-bottom,0px) + 12px);
+  opacity:0;visibility:hidden;transition:opacity 1s ease,visibility 1s;overflow:hidden}
+.screen.active{opacity:1;visibility:visible}
+
+/* ---------- 1. CARGA ---------- */
+#loader{background:radial-gradient(ellipse at 50% 65%,#0f2250 0%,#02050f 70%)}
+.track{position:relative;width:min(760px,92vw);height:130px}
+.road{position:absolute;left:0;right:0;bottom:12px;height:4px;
+  background:repeating-linear-gradient(90deg,#3a5588 0 34px,transparent 34px 60px);
+  animation:roadmove .35s linear infinite;opacity:.6}
+@keyframes roadmove{to{background-position:-60px 0}}
+.runner{position:absolute;bottom:10px;left:0;width:clamp(120px,24vw,180px)}
+.runner .car{width:100%;display:block;animation:rumble .18s ease-in-out infinite alternate;filter:drop-shadow(0 0 14px rgba(30,144,255,.55))}
+@keyframes rumble{to{transform:translateY(-1.5px)}}
+.runner::before{content:"";position:absolute;right:92%;top:38%;width:120px;height:26px;
+  background:repeating-linear-gradient(180deg,transparent 0 5px,rgba(124,196,255,.55) 5px 7px);
+  -webkit-mask:linear-gradient(90deg,transparent,#000);mask:linear-gradient(90deg,transparent,#000);animation:lines .25s linear infinite}
+@keyframes lines{50%{opacity:.4;transform:translateX(-8px)}}
+.bar{width:min(760px,92vw);height:12px;border-radius:99px;background:#0c1733;overflow:hidden;box-shadow:inset 0 0 0 1px #1d3470}
+.fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#0a3a9a,#1e90ff,#9ad4ff);box-shadow:0 0 18px #1e90ff}
+.pct{font-family:var(--race);font-size:clamp(34px,7vw,52px);margin-top:18px;color:#dff0ff;text-shadow:0 0 16px #1e90ff;font-variant-numeric:tabular-nums}
+.loadtext{margin-top:4px;color:#86a8dc;font-size:15px}
+
+.wheel{animation:spin .35s linear infinite;transform-box:view-box}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- 2. FLORES ---------- */
+#flowers{background:radial-gradient(ellipse at 50% 110%,#123a85 0%,#0a1a44 40%,#040a1c 80%);justify-content:space-evenly}
+.sky{position:absolute;inset:0;pointer-events:none}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite;animation-delay:var(--dl)}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
+.shoot{position:absolute;width:120px;height:2px;background:linear-gradient(90deg,#fff,transparent);transform:rotate(-20deg);opacity:0;animation:shoot 7s ease-in infinite}
+@keyframes shoot{0%,88%{opacity:0;translate:0 0}90%{opacity:1}100%{opacity:0;translate:-340px 125px}}
+.moon{position:absolute;top:calc(env(safe-area-inset-top,0px) + 7%);right:12%;width:clamp(56px,11vw,96px);aspect-ratio:1;border-radius:50%;
+  box-shadow:clamp(12px,2.2vw,20px) clamp(7px,1.2vw,11px) 0 0 #fff4c9;filter:drop-shadow(0 0 22px rgba(255,240,190,.55))}
+.title{position:relative;z-index:1;text-align:center;font-family:var(--script);font-weight:400;
+  font-size:clamp(42px,9.5vw,92px);line-height:1.02;
+  background:linear-gradient(100deg,#9fd3ff 0%,#ffffff 25%,#6fb8ff 50%,#ffffff 75%,#9fd3ff 100%);background-size:200% auto;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 4s linear infinite;
+  filter:drop-shadow(0 0 8px rgba(120,190,255,.9)) drop-shadow(0 0 26px rgba(30,144,255,.55))}
+.title span{display:block}
+@keyframes shine{to{background-position:-200% center}}
+.heart{display:inline-block;width:clamp(34px,6vw,54px);vertical-align:middle;margin-left:.15em;animation:beat 1.2s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(255,77,141,.9))}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.22)}30%{transform:scale(1)}45%{transform:scale(1.14)}}
+.bouquet{position:relative;z-index:1;height:min(46vh,380px);aspect-ratio:260/320;animation:float 4s ease-in-out infinite;transition:transform .3s}
+.bouquet svg{width:100%;height:100%;filter:drop-shadow(0 0 18px rgba(30,144,255,.55));animation:bglow 2.4s ease-in-out infinite}
+@keyframes bglow{50%{filter:drop-shadow(0 0 34px rgba(90,180,255,.9))}}
+@keyframes float{50%{translate:0 -10px}}
+.bouquet:hover{transform:scale(1.05) rotate(-2deg)}
+.hint{position:relative;z-index:1;color:#bcdcff;font-size:17px;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.45}}
+
+/* ---------- 3. REGALOS ---------- */
+#gifts{background:linear-gradient(180deg,#02040c 0%,#07102a 55%,#02040c 100%)}
+.race{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.lane{position:absolute;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,rgba(90,140,220,.18) 0 40px,transparent 40px 80px)}
+.racer{position:absolute;left:0;animation:drive linear infinite}
+.racer .car{display:block;width:100%}
+.racer.rev{animation-direction:reverse}
+.racer.rev .car{transform:scaleX(-1)}
+@keyframes drive{from{transform:translateX(-40vw)}to{transform:translateX(130vw)}}
+.giftwrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:clamp(14px,3vh,28px);width:100%}
+.gtitle{font-family:var(--script);font-size:clamp(40px,8vw,70px);color:#e6f3ff;text-shadow:0 0 14px #1e90ff,0 0 32px rgba(30,144,255,.6);text-align:center;line-height:1}
+.gsub{color:#a9c8f0;font-size:16px;text-align:center;margin-top:-8px}
+.gifts{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,3vw,34px)}
+@media (max-width:640px){.gifts{grid-template-columns:repeat(2,1fr)}}
+.gift{width:clamp(110px,19vw,160px);display:flex;flex-direction:column;align-items:center;gap:6px;animation:bob 2.6s ease-in-out infinite}
+.gift:nth-child(2){animation-delay:-.6s}.gift:nth-child(3){animation-delay:-1.2s}.gift:nth-child(4){animation-delay:-1.8s}
+@keyframes bob{50%{translate:0 -8px}}
+.gift svg{width:100%;filter:drop-shadow(0 10px 18px rgba(0,0,0,.6));transition:transform .25s}
+.gift:hover svg{transform:rotate(-6deg) scale(1.08)}
+.gift .lbl{font-weight:800;font-size:15px;color:#cfe4ff}
+.gift.opened .lbl::after{content:" ✓";color:#7cf0b0}
+.back-btn{position:absolute;z-index:3;top:calc(env(safe-area-inset-top,0px) + 14px);left:16px;padding:8px 14px;border-radius:99px;background:rgba(20,40,90,.6);color:#cfe4ff;font-size:14px;backdrop-filter:blur(6px)}
+
+/* ---------- TARJETA ---------- */
+.modal{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 16px);
+  background:rgba(2,5,15,.82);backdrop-filter:blur(5px);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+.modal.show{opacity:1;visibility:visible}
+.close{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);right:16px;width:44px;height:44px;border-radius:50%;background:rgba(40,70,140,.7);font-size:20px}
+.card{width:min(330px,82vw,calc((100vh - 140px) * 0.68));aspect-ratio:3/4.4;perspective:1400px;cursor:pointer;transform:scale(.4) rotate(-10deg);transition:transform .6s cubic-bezier(.2,1.5,.4,1)}
+.modal.show .card{transform:none}
+.inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.3,1.25,.5,1)}
+.card.flipped .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:22px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,.6),inset 0 0 0 3px rgba(255,255,255,.18)}
+.pack{background:linear-gradient(165deg,#2f7bff 0%,#0f3fb8 50%,#071d63 100%);display:flex;flex-direction:column;align-items:center;padding:12% 7% 6%}
+.pack::before{content:"";position:absolute;top:3.5%;left:50%;width:22%;height:3.2%;border-radius:99px;transform:translateX(-50%);background:#02050f;box-shadow:inset 0 2px 3px rgba(0,0,0,.8)}
+.logo{position:relative;display:inline-block;padding:4px 10px;transform:skewX(-10deg)}
+.logo svg{position:absolute;left:-8%;top:30%;width:116%;height:80%;z-index:0}
+.logo b{position:relative;z-index:1;font-family:var(--race);font-weight:400;font-size:clamp(20px,6.5vw,28px);letter-spacing:.02em;
+  background:linear-gradient(180deg,#fff79a 0%,#ffc21a 45%,#ff5a00 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(2px 2px 0 #6b0a00) drop-shadow(0 0 1px #fff)}
+.blister{position:relative;flex:1;width:100%;margin:6% 0 4%;border-radius:26px;display:flex;align-items:center;justify-content:center;overflow:hidden;
+  background:radial-gradient(circle at 50% 60%,rgba(120,200,255,.35),rgba(255,255,255,.06) 70%);
+  border:2px solid rgba(255,255,255,.55);box-shadow:inset 0 0 26px rgba(255,255,255,.25)}
+.blister::after{content:"";position:absolute;top:-40%;left:-60%;width:40%;height:180%;transform:rotate(25deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);animation:gleam 3.5s ease-in-out infinite}
+@keyframes gleam{0%,60%{left:-60%}100%{left:130%}}
+.blister svg{width:88%;filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))}
+.pname{font-family:var(--race);font-size:clamp(17px,5vw,22px);color:#fff;text-align:center;text-shadow:0 2px 0 #06184d}
+.pseries{font-size:13px;color:#bcd8ff;margin-top:2px}
+.flames{position:absolute;left:0;right:0;bottom:0;height:9%;opacity:.9}
+.back{transform:rotateY(180deg);background:radial-gradient(circle at 30% 18%,#3b8dff 0%,#0d3fb3 55%,#061a58 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6%;padding:10% 9%;text-align:center}
+.msg{font-family:var(--script);font-size:clamp(30px,8.6vw,42px);line-height:1.12;color:#fff;text-shadow:0 0 14px rgba(160,215,255,.85)}
+.hearts{color:#ff7aa8;letter-spacing:.4em;font-size:18px;text-shadow:0 0 10px rgba(255,77,141,.8)}
+.cnum{font-size:13px;color:#b8d4ff}
+.fliphint{color:#bcdcff;font-size:15px;text-align:center}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.2s!important}
+  .racer{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- 1. Pantalla de carga -->
+<section class="screen active" id="loader" aria-label="Cargando">
+  <div class="track">
+    <div class="road"></div>
+    <div class="runner" id="runner"></div>
+  </div>
+  <div class="bar"><div class="fill" id="fill"></div></div>
+  <div class="pct" id="pct">0%</div>
+  <div class="loadtext">Calentando motores para ti…</div>
+</section>
+
+<!-- 2. Pantalla de flores -->
+<section class="screen" id="flowers">
+  <div class="sky" id="sky"><div class="moon"></div></div>
+  <h1 class="title">
+    <span>Feliz Día del Novio</span>
+    <span>Mi Amorcito Lindo<svg class="heart" viewBox="0 0 32 29" aria-hidden="true"><path d="M16,28 C-10,10 4,-6 16,6 C28,-6 42,10 16,28Z" fill="#ff4d8d"/></svg></span>
+  </h1>
+  <button class="bouquet" id="bouquet" aria-label="Abrir tus regalos">
+    <svg viewBox="0 0 260 320" aria-hidden="true">
+      <defs>
+        <g id="tulip">
+          <path d="M-14,-6 Q-16,-28 -8,-34 Q-4,-24 0,-30 Q4,-24 8,-34 Q16,-28 14,-6 Q0,8 -14,-6Z" fill="currentColor"/>
+          <path d="M-6,-4 Q-9,-24 0,-33 Q9,-24 6,-4 Q0,2 -6,-4Z" fill="#fff" opacity=".25"/>
+          <path d="M-14,-6 Q0,8 14,-6" stroke="#07317e" stroke-width="1.5" fill="none" opacity=".5"/>
+        </g>
+        <g id="lily">
+          <g fill="currentColor">
+            <path d="M0,0 Q8,-13 0,-27 Q-8,-13 0,0Z" transform="rotate(0)"/><path d="M0,0 Q8,-13 0,-27 Q-8,-13 0,0Z" transform="rotate(60)"/>
+            <path d="M0,0 Q8,-13 0,-27 Q-8,-13 0,0Z" transform="rotate(120)"/><path d="M0,0 Q8,-13 0,-27 Q-8,-13 0,0Z" transform="rotate(180)"/>
+            <path d="M0,0 Q8,-13 0,-27 Q-8,-13 0,0Z" transform="rotate(240)"/><path d="M0,0 Q8,-13 0,-27 Q-8,-13 0,0Z" transform="rotate(300)"/>
+          </g>
+          <g stroke="#1e6fff" stroke-width="1.4" opacity=".7">
+            <line y2="-18"/><line y2="-18" transform="rotate(60)"/><line y2="-18" transform="rotate(120)"/>
+            <line y2="-18" transform="rotate(180)"/><line y2="-18" transform="rotate(240)"/><line y2="-18" transform="rotate(300)"/>
+          </g>
+          <g stroke="#ffd98a" stroke-width="1.2"><line x2="-6" y2="-11"/><line x2="6" y2="-11"/><line x2="0" y2="-13"/><line x2="-9" y2="-5"/><line x2="9" y2="-5"/></g>
+          <g fill="#ff9f1a"><circle cx="-6" cy="-11" r="1.8"/><circle cx="6" cy="-11" r="1.8"/><circle cx="0" cy="-13" r="1.8"/><circle cx="-9" cy="-5" r="1.8"/><circle cx="9" cy="-5" r="1.8"/></g>
+          <circle r="3" fill="#0b3a8a"/>
+        </g>
+        <linearGradient id="paper" x1="0" x2="1">
+          <stop offset="0" stop-color="#d9ecff"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#b6d6f7"/>
+        </linearGradient>
+      </defs>
+      <path d="M30,130 Q130,50 230,130 L206,172 L54,172 Z" fill="#9cc6f0"/>
+      <g stroke="#2f8a5f" stroke-width="3" fill="none"><path d="M130,96 Q130.0,175.0 130,238"/><path d="M86,126 Q108.0,190.0 130,238"/><path d="M174,126 Q152.0,190.0 130,238"/><path d="M108,82 Q119.0,168.0 130,238"/><path d="M152,82 Q141.0,168.0 130,238"/><path d="M130,62 Q130.0,158.0 130,238"/><path d="M64,154 Q97.0,204.0 130,238"/><path d="M196,154 Q163.0,204.0 130,238"/><path d="M108,144 Q119.0,199.0 130,238"/><path d="M152,144 Q141.0,199.0 130,238"/><path d="M130,154 Q130.0,204.0 130,238"/></g>
+      <g fill="#2e7d5b">
+        <path d="M0,0 Q14,-22 0,-50 Q-14,-22 0,0Z" transform="translate(58,176) rotate(-50)"/>
+        <path d="M0,0 Q14,-22 0,-50 Q-14,-22 0,0Z" transform="translate(202,176) rotate(50)"/>
+        <path d="M0,0 Q12,-20 0,-44 Q-12,-20 0,0Z" transform="translate(84,104) rotate(-25)"/>
+        <path d="M0,0 Q12,-20 0,-44 Q-12,-20 0,0Z" transform="translate(176,104) rotate(25)"/>
+      </g>
+      <use href="#lily" transform="translate(130,92) scale(1.25)" style="color:#cfe8ff"/><use href="#lily" transform="translate(86,122) scale(1.05)" style="color:#a9d6ff"/><use href="#lily" transform="translate(174,122) scale(1.05)" style="color:#a9d6ff"/><use href="#tulip" transform="translate(108,78) scale(1.1)" style="color:#1e6fff"/><use href="#tulip" transform="translate(152,78) scale(1.1)" style="color:#1e6fff"/><use href="#tulip" transform="translate(130,58) scale(1.05)" style="color:#0b4fc4"/><use href="#tulip" transform="translate(64,150) scale(1.05)" style="color:#1565c0"/><use href="#tulip" transform="translate(196,150) scale(1.05)" style="color:#1565c0"/><use href="#tulip" transform="translate(108,140) scale(1)" style="color:#3aa0ff"/><use href="#tulip" transform="translate(152,140) scale(1)" style="color:#3aa0ff"/><use href="#lily" transform="translate(130,150) scale(0.95)" style="color:#e6f3ff"/>
+      <path d="M50,160 L130,304 L210,160 Q130,190 50,160 Z" fill="url(#paper)"/>
+      <path d="M130,178 L130,304" stroke="#a7c8ea" stroke-width="1.5"/>
+      <g fill="#0d47a1">
+        <path d="M130,236 Q96,210 92,232 Q92,252 130,240Z"/>
+        <path d="M130,236 Q164,210 168,232 Q168,252 130,240Z"/>
+        <path d="M126,240 L110,284 L120,280 L128,292 L132,242Z"/>
+        <path d="M134,240 L150,284 L140,280 L132,292 L128,242Z"/>
+        <circle cx="130" cy="238" r="7" fill="#1e5bd0"/>
+      </g>
+    </svg>
+  </button>
+  <p class="hint">✨ Toca las flores ✨</p>
+</section>
+
+<!-- 3. Pantalla de regalos -->
+<section class="screen" id="gifts">
+  <div class="race" id="race"></div>
+  <button class="back-btn" id="backBtn">← Volver a las flores</button>
+  <div class="giftwrap">
+    <h2 class="gtitle">Tus regalos, mi amor</h2>
+    <p class="gsub">Abre cada paquete 🎁</p>
+    <div class="gifts" id="giftGrid"></div>
+  </div>
+</section>
+
+<!-- Tarjeta -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Tarjeta de regalo">
+  <button class="close" id="closeBtn" aria-label="Cerrar">✕</button>
+  <div class="card" id="card" tabindex="0">
+    <div class="inner">
+      <div class="face pack">
+        <div class="logo"><svg viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M2,30 Q60,4 120,17 Q160,25 198,6 Q172,36 120,33 Q60,29 2,30Z" fill="#ff3b1f"/></svg><b>TURBO AMOR</b></div>
+        <div class="blister" id="blister"></div>
+        <div class="pname" id="pname"></div>
+        <div class="pseries" id="pseries"></div>
+        <svg class="flames" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,30 L0,14 Q20,2 30,16 Q45,0 60,14 Q78,-2 92,15 Q110,0 124,14 Q142,-2 156,15 Q174,0 188,14 Q206,-2 220,15 Q238,0 252,14 Q270,-2 284,15 Q294,6 300,12 L300,30Z" fill="#ff6a00"/>
+          <path d="M0,30 L0,20 Q20,10 32,22 Q48,8 62,21 Q80,8 94,22 Q112,8 126,21 Q144,8 158,22 Q176,8 190,21 Q208,8 222,22 Q240,8 254,21 Q272,8 286,22 L300,20 L300,30Z" fill="#ffc21a"/>
+        </svg>
+      </div>
+      <div class="face back">
+        <div class="logo"><svg viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M2,30 Q60,4 120,17 Q160,25 198,6 Q172,36 120,33 Q60,29 2,30Z" fill="#ff3b1f"/></svg><b>TURBO AMOR</b></div>
+        <p class="msg" id="msg"></p>
+        <div class="hearts">♥ ♥ ♥</div>
+        <div class="cnum" id="cnum"></div>
+      </div>
+    </div>
+  </div>
+  <p class="fliphint" id="fliphint">Toca la tarjeta para voltearla 💙</p>
+</div>
+
+<script>
+/* ---------- piezas de dibujo ---------- */
+function wheel(cx,cy,rim){
+  return `<g class="wheel" style="transform-origin:${cx}px ${cy}px">
+    <circle cx="${cx}" cy="${cy}" r="13" fill="#0d0d10"/><circle cx="${cx}" cy="${cy}" r="8.5" fill="#2a2f3a"/>
+    <g stroke="${rim}" stroke-width="2.2"><line x1="${cx-7}" y1="${cy}" x2="${cx+7}" y2="${cy}"/><line x1="${cx}" y1="${cy-7}" x2="${cx}" y2="${cy+7}"/>
+    <line x1="${cx-5}" y1="${cy-5}" x2="${cx+5}" y2="${cy+5}"/><line x1="${cx-5}" y1="${cy+5}" x2="${cx+5}" y2="${cy-5}"/></g>
+    <circle cx="${cx}" cy="${cy}" r="2.6" fill="${rim}"/></g>`;
+}
+function sportsCar(body='#000000',accent='#1e90ff',glass='#163d80',twin=false){
+  return `<svg class="car" viewBox="0 0 200 70" aria-hidden="true">
+    <ellipse cx="100" cy="64" rx="86" ry="4" fill="rgba(0,0,0,.45)"/>
+    <g transform="translate(200,0) scale(-1,1)">
+    <path d="M10,48 L14,36 Q18,30 30,29 L62,27 L88,14 Q96,10 110,10 L135,11 Q148,12 158,22 L172,28 Q190,31 193,40 L194,48 Q194,52 188,52 L170,52 A16,16 0 0 0 138,52 L62,52 A16,16 0 0 0 30,52 L14,52 Q10,52 10,48 Z" fill="${body}" stroke="${accent}" stroke-opacity=".35" stroke-width="1"/>
+    <path d="M16,40 L190,38" stroke="${accent}" stroke-width="3"/>
+    ${twin?`<path d="M16,45 L190,43" stroke="${accent}" stroke-width="2"/><path d="M100,11 L110,25 M108,10 L118,25" stroke="${accent}" stroke-width="2.5"/>`:`<path d="M60,29 L176,31" stroke="${accent}" stroke-width="2" opacity=".8"/>`}
+    <path d="M93,16 Q99,13 110,13 L121,13 L121,25 L96,25 Z" fill="${glass}"/>
+    <path d="M124,13 L133,13.5 Q143,15 151,25 L124,25 Z" fill="${glass}"/>
+    <path d="M140,15 L150,15 L142,23 Z" fill="#fff" opacity=".25"/>
+    </g>
+    <rect x="183" y="36" width="8" height="4" rx="2" fill="#fff6b0"/>
+    <path d="M191,38 L215,32 L215,44 Z" fill="#fff6b0" opacity=".18"/>
+    <rect x="7" y="39" width="5" height="4" rx="1.5" fill="#ff2d55"/>
+    ${wheel(46,52,accent)}${wheel(154,52,accent)}
+  </svg>`;
+}
+function bigWheel(cx,cy){
+  return `<circle cx="${cx}" cy="${cy}" r="20" fill="#15151c"/><circle cx="${cx}" cy="${cy}" r="11" fill="#cfd8e6"/><circle cx="${cx}" cy="${cy}" r="4" fill="#556"/>`;
+}
+function toyCar(color,head,stripe='#ffffff'){
+  return `<svg viewBox="0 0 220 160" aria-hidden="true">
+    ${head}
+    <path d="M18,112 Q18,88 44,86 L78,86 Q86,98 105,98 Q124,98 132,86 L176,86 Q204,88 206,112 L206,120 Q206,128 198,128 L26,128 Q18,128 18,120 Z" fill="${color}"/>
+    <path d="M140,86 L150,62 L157,62 L150,86 Z" fill="#cdeeff" opacity=".85"/>
+    <path d="M30,108 L196,108" stroke="${stripe}" stroke-width="5" stroke-linecap="round" opacity=".9"/>
+    <circle cx="199" cy="100" r="5" fill="#fff6b0"/>
+    <rect x="4" y="104" width="15" height="8" rx="3" fill="#8a8a99"/>
+    ${bigWheel(62,128)}${bigWheel(166,128)}
+  </svg>`;
+}
+const bearHead = `
+  <path d="M84,82 Q58,78 34,64 Q50,88 84,94Z" fill="#ff5a5a"/>
+  <circle cx="81" cy="40" r="11" fill="#8b5a2b"/><circle cx="129" cy="40" r="11" fill="#8b5a2b"/>
+  <circle cx="81" cy="40" r="5" fill="#e3b27a"/><circle cx="129" cy="40" r="5" fill="#e3b27a"/>
+  <circle cx="105" cy="62" r="28" fill="#9c6633"/>
+  <ellipse cx="105" cy="72" rx="13" ry="10" fill="#e3b27a"/><ellipse cx="105" cy="67" rx="5" ry="3.5" fill="#2b1a0e"/>
+  <circle cx="94" cy="56" r="3.6" fill="#1a1a1a"/><circle cx="116" cy="56" r="3.6" fill="#1a1a1a"/>
+  <circle cx="95" cy="55" r="1.2" fill="#fff"/><circle cx="117" cy="55" r="1.2" fill="#fff"/>
+  <path d="M100,75 Q105,80 110,75" stroke="#2b1a0e" stroke-width="2" fill="none"/>
+  <circle cx="87" cy="68" r="4" fill="#ff8fab" opacity=".6"/><circle cx="123" cy="68" r="4" fill="#ff8fab" opacity=".6"/>`;
+const catHead = `
+  <path d="M80,50 L84,22 L102,40 Z" fill="#aab3c4"/><path d="M130,50 L126,22 L108,40 Z" fill="#aab3c4"/>
+  <path d="M84,44 L86,30 L96,40 Z" fill="#ffb3c7"/><path d="M126,44 L124,30 L114,40 Z" fill="#ffb3c7"/>
+  <circle cx="105" cy="62" r="28" fill="#b9c1d0"/>
+  <path d="M96,38 Q105,46 114,38" stroke="#8a93a6" stroke-width="3" fill="none"/>
+  <ellipse cx="94" cy="58" rx="4.5" ry="6" fill="#3dbb6b"/><ellipse cx="116" cy="58" rx="4.5" ry="6" fill="#3dbb6b"/>
+  <ellipse cx="94" cy="59" rx="1.8" ry="4.5" fill="#111"/><ellipse cx="116" cy="59" rx="1.8" ry="4.5" fill="#111"/>
+  <path d="M101,68 L109,68 L105,72 Z" fill="#ff7aa0"/>
+  <path d="M105,72 Q101,77 97,74 M105,72 Q109,77 113,74" stroke="#555" stroke-width="1.6" fill="none"/>
+  <g stroke="#555" stroke-width="1.2"><line x1="72" y1="66" x2="92" y2="68"/><line x1="72" y1="72" x2="92" y2="71"/><line x1="138" y1="66" x2="118" y2="68"/><line x1="138" y1="72" x2="118" y2="71"/></g>`;
+const penguinHead = `
+  <circle cx="105" cy="62" r="28" fill="#1b2440"/>
+  <path d="M77,54 Q80,26 105,24 Q130,26 133,54 Z" fill="#1e90ff"/>
+  <rect x="75" y="50" width="60" height="7" rx="3.5" fill="#bfe3ff"/>
+  <circle cx="105" cy="22" r="7" fill="#ffffff"/>
+  <circle cx="97" cy="66" r="11" fill="#fff"/><circle cx="113" cy="66" r="11" fill="#fff"/><ellipse cx="105" cy="74" rx="15" ry="10" fill="#fff"/>
+  <circle cx="98" cy="64" r="3.4" fill="#111"/><circle cx="112" cy="64" r="3.4" fill="#111"/>
+  <path d="M99,70 L111,70 L105,78 Z" fill="#ff9f1a"/>
+  <circle cx="89" cy="74" r="3.5" fill="#ff8fab" opacity=".6"/><circle cx="121" cy="74" r="3.5" fill="#ff8fab" opacity=".6"/>`;
+
+/* ---------- imágenes propias (mismo folder que index.html) ---------- */
+function imgHead(src){
+  return `<image href="${src}" x="63" y="16" width="84" height="84" preserveAspectRatio="xMidYMid meet"/>`;
+}
+function imgCard(src){
+  return `<img src="${src}" alt="" style="width:88%;max-height:92%;object-fit:contain;filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))">`;
+}
+
+/* ---------- contenido de las 4 tarjetas ---------- */
+const cards = [
+  {name:'Osito Turbo', art:()=>toyCar('#ff8a00',imgHead('2.png'),'#fff3c4'),
+   msg:'Eres el mejor novio del mundo', box:'#1e90ff', lid:'#4aa8ff', rib:'#ffd23f'},
+  {name:'Gatito Rayo', art:()=>toyCar('#ffd000',imgHead('3.png'),'#1e1e28'),
+   msg:'No me imagino a nadie más que tú como mi futuro esposo', box:'#e53950', lid:'#ff5f74', rib:'#ffffff'},
+  {name:'Pingüino Nitro', art:()=>toyCar('#12b3a6',imgHead('1.png'),'#ffffff'),
+   msg:'Te veo y me doy cuenta de que me llenas la vida de una forma tan hermosa', box:'#8e44ff', lid:'#a86bff', rib:'#7cf0e0'},
+  {name:'Bólido Medianoche', art:()=>imgCard('4.png'),
+   msg:'Haría lo que fuera por ti, porque eres el amor de todas mis vidas', box:'#11a36a', lid:'#2ecc8a', rib:'#ff4d8d'}
+];
+
+function giftSVG(c){
+  return `<svg viewBox="0 0 120 120" aria-hidden="true">
+    <rect x="14" y="48" width="92" height="64" rx="6" fill="${c.box}"/>
+    <g fill="#fff" opacity=".22"><circle cx="30" cy="66" r="5"/><circle cx="84" cy="70" r="5"/><circle cx="36" cy="96" r="5"/><circle cx="88" cy="98" r="5"/></g>
+    <rect x="8" y="34" width="104" height="20" rx="5" fill="${c.lid}"/>
+    <rect x="52" y="34" width="16" height="78" fill="${c.rib}"/>
+    <path d="M60,34 Q34,4 24,20 Q18,36 60,34Z" fill="${c.rib}"/>
+    <path d="M60,34 Q86,4 96,20 Q102,36 60,34Z" fill="${c.rib}"/>
+    <circle cx="60" cy="33" r="7" fill="${c.rib}" stroke="rgba(0,0,0,.15)" stroke-width="2"/>
+  </svg>`;
+}
+
+/* ---------- pantallas ---------- */
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));
+}
+
+/* 1. carga */
+const runner=document.getElementById('runner'), fill=document.getElementById('fill'), pct=document.getElementById('pct');
+runner.innerHTML=sportsCar('#050508','#1e90ff','#1d4d9e',true);
+const DUR=5200; let t0=null;
+function ease(k){ // avance con pequeñas pausas, como una carga real
+  const base=1-Math.pow(1-k,2.2);
+  return Math.min(1,Math.max(0,base - 0.025*Math.sin(k*Math.PI*5)*(1-k)));
+}
+function tick(t){
+  if(t0===null)t0=t;
+  const k=Math.min(1,(t-t0)/DUR);
+  const p=Math.round(ease(k)*100);
+  fill.style.width=p+'%';
+  pct.textContent=p+'%';
+  const w=runner.offsetWidth;
+  runner.style.left=`calc(${p}% - ${p/100*w}px)`;
+  if(k<1) requestAnimationFrame(tick);
+  else { pct.textContent='100%'; setTimeout(()=>show('flowers'),700); }
+}
+requestAnimationFrame(tick);
+
+/* 2. estrellas */
+const sky=document.getElementById('sky');
+for(let i=0;i<140;i++){
+  const s=document.createElement('div'); s.className='star';
+  const z=Math.random()*2.4+0.8;
+  s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${z}px;height:${z}px;--d:${(Math.random()*3+1.5).toFixed(2)}s;--dl:${(-Math.random()*4).toFixed(2)}s`;
+  sky.appendChild(s);
+}
+[['12%','78%','0s'],['28%','40%','3.5s']].forEach(([top,left,dl])=>{
+  const s=document.createElement('div'); s.className='shoot'; s.style.cssText=`top:${top};left:${left};animation-delay:${dl}`; sky.appendChild(s);
+});
+document.getElementById('bouquet').addEventListener('click',()=>show('gifts'));
+document.getElementById('backBtn').addEventListener('click',()=>show('flowers'));
+
+/* 3. carros corriendo de fondo */
+const race=document.getElementById('race');
+const palette=[['#e53950','#ffd23f'],['#1e90ff','#ffffff'],['#ff8a00','#1e1e28'],['#8e44ff','#7cf0e0'],['#11a36a','#ffffff'],['#050508','#1e90ff'],['#ffd000','#e53950'],['#c0c7d4','#1e90ff'],['#ff4d8d','#ffffff'],['#12b3a6','#ffd23f']];
+const lanes=[8,20,32,44,56,68,80,92];
+lanes.forEach(y=>{const l=document.createElement('div');l.className='lane';l.style.top=(y+5)+'%';race.appendChild(l);});
+for(let i=0;i<12;i++){
+  const [b,a]=palette[i%palette.length];
+  const lane=lanes[i%lanes.length];
+  const size=70+Math.random()*120;
+  const el=document.createElement('div');
+  el.className='racer'+(i%3===1?' rev':'');
+  const dur=(3+Math.random()*5).toFixed(2);
+  el.style.cssText=`top:${lane}%;width:${size}px;animation-duration:${dur}s;animation-delay:${(-Math.random()*8).toFixed(2)}s;opacity:${(0.35+size/300).toFixed(2)};filter:blur(${size<100?1:0}px)`;
+  el.innerHTML=sportsCar(b,a,'#1d3f7a',i%2===0);
+  race.appendChild(el);
+}
+
+/* regalos */
+const grid=document.getElementById('giftGrid');
+cards.forEach((c,i)=>{
+  const g=document.createElement('button'); g.className='gift';
+  g.setAttribute('aria-label',`Abrir regalo ${i+1}`);
+  g.innerHTML=giftSVG(c)+`<span class="lbl">Regalo ${i+1}</span>`;
+  g.addEventListener('click',()=>{g.classList.add('opened');openCard(i);});
+  grid.appendChild(g);
+});
+
+/* tarjeta */
+const modal=document.getElementById('modal'), card=document.getElementById('card'), hint=document.getElementById('fliphint');
+function openCard(i){
+  const c=cards[i];
+  document.getElementById('blister').innerHTML=c.art();
+  document.getElementById('pname').textContent=c.name;
+  document.getElementById('pseries').textContent=`Edición Día del Novio · ${i+1} de 4`;
+  document.getElementById('msg').textContent=c.msg;
+  document.getElementById('cnum').textContent=`Tarjeta ${i+1} de 4`;
+  card.classList.remove('flipped');
+  hint.textContent='Toca la tarjeta para voltearla 💙';
+  modal.classList.add('show');
+  setTimeout(()=>card.focus(),300);
+}
+function flip(){
+  card.classList.toggle('flipped');
+  hint.textContent=card.classList.contains('flipped')?'Toca otra vez para ver el paquete':'Toca la tarjeta para voltearla 💙';
+}
+card.addEventListener('click',flip);
+card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip();}});
+function closeCard(){modal.classList.remove('show');}
+document.getElementById('closeBtn').addEventListener('click',closeCard);
+modal.addEventListener('click',e=>{if(e.target===modal)closeCard();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCard();});
+</script>
+</body>
+</html>
